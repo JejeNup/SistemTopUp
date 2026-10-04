@@ -1,13 +1,25 @@
 package com.mycompany.sistemtopup;
 
-import java.util.Random; 
+import java.util.Random;
 
 public class Voucher extends Transaksi {
     private String kodeRedeem;
     
     public Voucher(String namaGame, String idPelanggan, int nominalTopUp, double totalHarga) {
         super(namaGame, idPelanggan, nominalTopUp, totalHarga);
-        this.kodeRedeem = generateKodeVoucher(); 
+        this.kodeRedeem = generateKodeVoucher();
+    }
+
+    public String getKodeRedeem() {
+        return this.kodeRedeem;
+    }
+
+    public void setKodeRedeem(String kodeRedeem) {
+        if (kodeRedeem != null && !kodeRedeem.trim().isEmpty()) {
+            this.kodeRedeem = kodeRedeem;
+        } else {
+            this.kodeRedeem = generateKodeVoucher();
+        }
     }
     
     private String generateKodeVoucher() {
@@ -22,12 +34,13 @@ public class Voucher extends Transaksi {
     
     @Override
     public void tampilkanStruk() {
-        System.out.printf("[Voucher]   Platform: %-6s | Akun: %-9s | Kode: %-12s | Item: %-5d | Harga: Rp%.0f\n", 
-                          this.namaGame, this.idPelanggan, this.kodeRedeem, this.nominalTopUp, this.totalHarga);
+        System.out.print("[Voucher]     ");
+        super.tampilkanStruk(); 
+        System.out.printf(" | Kode Redeem: %-12s\n", this.kodeRedeem);
     }
     
     @Override
     public void instruksiProses() {
-        System.out.println("-> Proses: Transaksi berhasil! JANGAN berikan kode redeem (" + this.kodeRedeem + ") kepada siapa pun.");
+        System.out.println("-> Proses: Kode Redeem (" + this.kodeRedeem + ") telah terbit. Silakan klaim di situs resmi.");
     }
 }
