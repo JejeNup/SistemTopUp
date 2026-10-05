@@ -30,6 +30,10 @@ public class SistemTopUp {
         if (!ditemukan) System.out.println("Tidak ada transaksi yang memenuhi kriteria nominal tersebut.");
     }
 
+    public static void eksekusiTransaksi(Transaksi pesanan) {
+        pesanan.instruksiProses(); 
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             Transaksi[] daftarTransaksi = new Transaksi[20];
@@ -38,6 +42,7 @@ public class SistemTopUp {
             daftarTransaksi[jumlahTransaksi++] = new TopUpGame("Genshin", "102938475", 300, 300 * 1500.0, "8012", "Asia");
             daftarTransaksi[jumlahTransaksi++] = new TopUpGame("MLBB", "98765432", 1000, 1000 * 1500.0, "2021", "Global");
             daftarTransaksi[jumlahTransaksi++] = new Voucher("Roblox", "OrangGanteng", 500, 500 * 1500.0);
+            daftarTransaksi[jumlahTransaksi++] = new LanggananPremium("Genshin", "Plismenangrateoff", 1, 1 * 79000.0, 30);
             
             boolean isRunning = true;
             
@@ -47,11 +52,12 @@ public class SistemTopUp {
             
             while(isRunning) {
                 System.out.println("\n--- MENU UTAMA ---");
-                System.out.println("1. Tambah Transaksi Top-Up Baru");
-                System.out.println("2. Tampilkan Seluruh Data Transaksi");
-                System.out.println("3. Cari Transaksi (Fitur Overloading)");
-                System.out.println("4. Keluar");
-                System.out.print("Pilih opsi (1-4): ");
+                System.out.println("1. Tambah Transaksi Top-Up");
+                System.out.println("2. Tampilkan Seluruh Data Pesanan");
+                System.out.println("3. Cari Riwayat Pesanan (Fitur Overloading)");
+                System.out.println("4. Simulasi Pesanan (Dynamic Binding)");
+                System.out.println("5. Keluar");
+                System.out.print("Pilih opsi (1-5): ");
                 
                 int pilihan = scanner.nextInt();
                 scanner.nextLine(); 
@@ -62,7 +68,8 @@ public class SistemTopUp {
                             System.out.println("\n-- Pilih Jenis Layanan --");
                             System.out.println("1. Top-Up Game Langsung (Direct UID & Server)");
                             System.out.println("2. Voucher Digital (Kode Redeem)");
-                            System.out.print("Pilihan (1/2): ");
+                            System.out.println("3. Langganan/Membership");
+                            System.out.print("Pilihan (1/2/3): ");
                             
                             int PCase1 = scanner.nextInt();
                             scanner.nextLine();
@@ -73,11 +80,11 @@ public class SistemTopUp {
                             System.out.print("Masukkan ID Pelanggan / UID : ");
                             String uid = scanner.nextLine();
                             
-                            System.out.print("Masukkan Jumlah Item: ");
+                            System.out.print("Masukkan Jumlah Item/Kuantitas: ");
                             int nominal = scanner.nextInt();
                             scanner.nextLine();
                             
-                            double harga = nominal * 1500.0;
+                            double harga = (PCase1 == 3) ? nominal * 79000.0 : nominal * 1500.0;
                             System.out.println("-> Total harga: Rp" + (long)harga);
                             
                             if (PCase1 == 1) {
@@ -90,6 +97,12 @@ public class SistemTopUp {
                             } else if (PCase1 == 2) {
                                 System.out.println("-> Membuat kode redeem unik...");
                                 daftarTransaksi[jumlahTransaksi] = new Voucher(game, uid, nominal, harga);
+                            } else if (PCase1 == 3) {
+                                System.out.print("Masukkan Durasi Aktif : ");
+                                int durasi = scanner.nextInt();
+                                scanner.nextLine();
+                                
+                                daftarTransaksi[jumlahTransaksi] = new LanggananPremium(game, uid, nominal, harga, durasi);
                             } else {
                                 System.out.println("Jenis layanan tidak valid!");
                                 break;
@@ -109,8 +122,6 @@ public class SistemTopUp {
                             for (int i = 0; i < jumlahTransaksi; i++) {
                                 System.out.print((i + 1) + ". ");
                                 daftarTransaksi[i].tampilkanStruk();
-                                daftarTransaksi[i].instruksiProses();
-                                System.out.println("--------------------------------------------------------");
                             }
                             System.out.println("Total Transaksi Berhasil Dibuat: " + Transaksi.totalTransaksiBerhasil);
                         }
@@ -141,10 +152,23 @@ public class SistemTopUp {
                         scanner.nextLine();
                     }
                     case 4 -> {
+                        System.out.println("\n============= SIMULASI DYNAMIC BINDING =============");
+                        if (jumlahTransaksi == 0) {
+                            System.out.println("Belum ada pesanan untuk diproses.");
+                        } else {
+                            for (int i = 0; i < jumlahTransaksi; i++) {
+                                System.out.print("Antrian " + (i+1) + " | ");
+                                eksekusiTransaksi(daftarTransaksi[i]); 
+                            }
+                        }
+                        System.out.print("\nTekan Enter untuk kembali ke menu...");
+                        scanner.nextLine();
+                    }
+                    case 5 -> {
                         System.out.println("Terima kasih! Balik lagi yah.");
                         isRunning = false;
                     }
-                    default -> System.out.println("Opsi menu tidak valid (Pilih 1-4).");
+                    default -> System.out.println("Opsi menu tidak valid (Pilih 1-5).");
                 }
             }
         }
