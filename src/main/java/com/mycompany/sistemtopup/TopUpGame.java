@@ -1,6 +1,6 @@
 package com.mycompany.sistemtopup;
 
-public class TopUpGame extends Transaksi {
+public class TopUpGame extends Transaksi implements DapatDibatalkan {
     private String idServer;
     private String namaServer;
     
@@ -10,9 +10,7 @@ public class TopUpGame extends Transaksi {
         this.setNamaServer(namaServer);
     }
 
-    public String getIdServer() {
-        return this.idServer;
-    }
+    public String getIdServer() { return this.idServer; }
 
     public void setIdServer(String idServer) {
         if (idServer != null && !idServer.trim().isEmpty()) {
@@ -22,9 +20,7 @@ public class TopUpGame extends Transaksi {
         }
     }
 
-    public String getNamaServer() {
-        return this.namaServer;
-    }
+    public String getNamaServer() { return this.namaServer; }
 
     public void setNamaServer(String namaServer) {
         if (namaServer != null && !namaServer.trim().isEmpty()) {
@@ -43,6 +39,11 @@ public class TopUpGame extends Transaksi {
     
     @Override
     public void instruksiProses() {
-        System.out.println("-> Proses pesanan pada akun " + getIdPelanggan() + " (Server: " + this.namaServer + ").");
+        System.out.println("-> Proses: Pesanan dikirim langsung pada akun " + getIdPelanggan() + " (Server: " + this.namaServer + ").");
+    }
+
+    @Override
+    public void prosesPembatalan() {
+        System.out.println("-> [INFO BATAL]: Top-up game dibatalkan, dana dikembalikan ke e-wallet pelanggan.");
     }
 }

@@ -1,6 +1,6 @@
 package com.mycompany.sistemtopup;
 
-public class LanggananPremium extends Transaksi {
+public class LanggananPremium extends Transaksi implements DapatDiklaim {
     private int durasiHari;
 
     public LanggananPremium(String namaGame, String idPelanggan, int nominalTopUp, double totalHarga, int durasiHari) {
@@ -8,9 +8,7 @@ public class LanggananPremium extends Transaksi {
         this.setDurasiHari(durasiHari);
     }
 
-    public int getDurasiHari() {
-        return this.durasiHari;
-    }
+    public int getDurasiHari() { return this.durasiHari; }
 
     public void setDurasiHari(int durasiHari) {
         if (durasiHari > 0) {
@@ -31,5 +29,10 @@ public class LanggananPremium extends Transaksi {
     @Override
     public void instruksiProses() {
         System.out.println("-> Proses: Mengaktifkan langganan bulanan selama " + this.durasiHari + " hari pada akun " + getIdPelanggan() + ".");
+    }
+
+    @Override
+    public void caraKlaim() {
+        System.out.println("-> [INFO KLAIM]: Login ulang atau relog in-game untuk merefresh sisa durasi premium.");
     }
 }

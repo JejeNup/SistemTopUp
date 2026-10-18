@@ -1,6 +1,6 @@
 package com.mycompany.sistemtopup;
 
-public class Transaksi {
+public abstract class Transaksi {
     private String namaGame;
     private String idPelanggan;
     private int nominalTopUp; 
@@ -17,9 +17,7 @@ public class Transaksi {
         totalTransaksiBerhasil++;
     }
 
-    public String getNamaGame() {
-        return this.namaGame;
-    }
+    public String getNamaGame() { return this.namaGame; }
 
     public void setNamaGame(String namaGame) {
         if (namaGame != null && !namaGame.trim().isEmpty()) {
@@ -30,9 +28,7 @@ public class Transaksi {
         }
     }
 
-    public String getIdPelanggan() { 
-        return this.idPelanggan; 
-    }
+    public String getIdPelanggan() { return this.idPelanggan; }
 
     public void setIdPelanggan(String idPelanggan) {
         if (idPelanggan != null && !idPelanggan.trim().isEmpty()) {
@@ -43,9 +39,7 @@ public class Transaksi {
         }
     }
 
-    public int getNominalTopUp() { 
-        return this.nominalTopUp; 
-    }
+    public int getNominalTopUp() { return this.nominalTopUp; }
 
     public void setNominalTopUp(int nominalTopUp) {
         if (nominalTopUp > 0) {
@@ -56,9 +50,7 @@ public class Transaksi {
         }
     }
 
-    public double getTotalHarga() { 
-        return this.totalHarga; 
-    }
+    public double getTotalHarga() { return this.totalHarga; }
 
     public void setTotalHarga(double totalHarga) {
         if (totalHarga >= 0) {
@@ -74,7 +66,5 @@ public class Transaksi {
                 this.namaGame, this.idPelanggan, this.nominalTopUp, this.totalHarga);
     }
 
-    public void instruksiProses() {
-        System.out.println("-> Proses: Mengirim pesanan ke akun pelanggan secara default.");
-    }
+    public abstract void instruksiProses();
 }

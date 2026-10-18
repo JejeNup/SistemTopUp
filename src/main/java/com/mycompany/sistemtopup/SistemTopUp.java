@@ -6,6 +6,7 @@ public class SistemTopUp {
     
     public static void cariPesanan(String idPelanggan, Transaksi[] daftarTransaksi, int jumlahTransaksi) {
         System.out.println("\n[Hasil Pencarian] UID/Akun: " + idPelanggan);
+    
         boolean ditemukan = false;
         for (int i = 0; i < jumlahTransaksi; i++) {
             if (daftarTransaksi[i].getIdPelanggan().equalsIgnoreCase(idPelanggan)) { 
@@ -55,7 +56,7 @@ public class SistemTopUp {
                 System.out.println("1. Tambah Transaksi Top-Up");
                 System.out.println("2. Tampilkan Seluruh Data Pesanan");
                 System.out.println("3. Cari Riwayat Pesanan (Fitur Overloading)");
-                System.out.println("4. Simulasi Pesanan (Dynamic Binding)");
+                System.out.println("4. Simulasi Pesanan (Abstract & Interface Check)");
                 System.out.println("5. Keluar");
                 System.out.print("Pilih opsi (1-5): ");
                 
@@ -152,13 +153,23 @@ public class SistemTopUp {
                         scanner.nextLine();
                     }
                     case 4 -> {
-                        System.out.println("\n============= SIMULASI DYNAMIC BINDING =============");
+                        System.out.println("\n============= SIMULASI PESANAN =============");
                         if (jumlahTransaksi == 0) {
                             System.out.println("Belum ada pesanan untuk diproses.");
                         } else {
                             for (int i = 0; i < jumlahTransaksi; i++) {
-                                System.out.print("Antrian " + (i+1) + " | ");
+                                System.out.println("\n=== Antrian " + (i+1) + " | Pesanan " + daftarTransaksi[i].getNamaGame() + " ===");
                                 eksekusiTransaksi(daftarTransaksi[i]); 
+                                
+                                if (daftarTransaksi[i] instanceof DapatDibatalkan) {
+                                    DapatDibatalkan itemBatal = (DapatDibatalkan) daftarTransaksi[i];
+                                    itemBatal.prosesPembatalan();
+                                }
+                                
+                                if (daftarTransaksi[i] instanceof DapatDiklaim) {
+                                    DapatDiklaim itemKlaim = (DapatDiklaim) daftarTransaksi[i];
+                                    itemKlaim.caraKlaim();
+                                }
                             }
                         }
                         System.out.print("\nTekan Enter untuk kembali ke menu...");
