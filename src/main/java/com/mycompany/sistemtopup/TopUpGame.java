@@ -4,31 +4,16 @@ public class TopUpGame extends Transaksi implements DapatDibatalkan {
     private String idServer;
     private String namaServer;
     
-    public TopUpGame(String namaGame, String idPelanggan, int nominalTopUp, double totalHarga, String idServer, String namaServer) {
+    public TopUpGame(String namaGame, String idPelanggan, int nominalTopUp, double totalHarga, String idServer, String namaServer) throws Exception {
         super(namaGame, idPelanggan, nominalTopUp, totalHarga);
         this.setIdServer(idServer);
         this.setNamaServer(namaServer);
     }
-
+    
     public String getIdServer() { return this.idServer; }
-
-    public void setIdServer(String idServer) {
-        if (idServer != null && !idServer.trim().isEmpty()) {
-            this.idServer = idServer;
-        } else {
-            this.idServer = "-";
-        }
-    }
-
+    public void setIdServer(String idServer) { this.idServer = (idServer != null && !idServer.trim().isEmpty()) ? idServer : "-"; }
     public String getNamaServer() { return this.namaServer; }
-
-    public void setNamaServer(String namaServer) {
-        if (namaServer != null && !namaServer.trim().isEmpty()) {
-            this.namaServer = namaServer;
-        } else {
-            this.namaServer = "Global";
-        }
-    }
+    public void setNamaServer(String namaServer) { this.namaServer = (namaServer != null && !namaServer.trim().isEmpty()) ? namaServer : "Global"; }
     
     @Override
     public void tampilkanStruk() {
@@ -38,12 +23,8 @@ public class TopUpGame extends Transaksi implements DapatDibatalkan {
     }
     
     @Override
-    public void instruksiProses() {
-        System.out.println("-> Proses: Pesanan dikirim langsung pada akun " + getIdPelanggan() + " (Server: " + this.namaServer + ").");
-    }
+    public void instruksiProses() { System.out.println("-> Proses: Pesanan dikirim langsung pada akun " + getIdPelanggan() + "."); }
 
     @Override
-    public void prosesPembatalan() {
-        System.out.println("-> [INFO BATAL]: Top-up game dibatalkan, dana dikembalikan ke e-wallet pelanggan.");
-    }
+    public void prosesPembatalan() { System.out.println("-> [INFO BATAL]: Top-up game dibatalkan."); }
 }
