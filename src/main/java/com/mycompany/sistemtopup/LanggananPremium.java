@@ -2,7 +2,7 @@ package com.mycompany.sistemtopup;
 
 public class LanggananPremium extends Transaksi implements DapatDiklaim {
     private int durasiHari;
-
+    
     public LanggananPremium(String namaGame, String idPelanggan, int nominalTopUp, double totalHarga, int durasiHari) throws Exception {
         super(namaGame, idPelanggan, nominalTopUp, totalHarga);
         this.setDurasiHari(durasiHari);

@@ -10,18 +10,21 @@ public class SistemTopUp {
         
         LefelupStore tokoLefelup = new LefelupStore("Lefelup Top-Up Store");
         tokoLefelup.bukaToko();
+        tokoLefelup.muatDataDariFile();
         
-        tokoLefelup.tambahPelanggan(new Pelanggan("102938475", "JeJuy"));
-        tokoLefelup.tambahPelanggan(new Pelanggan("98765432", "Sultan Gantenk"));
-        tokoLefelup.tambahPelanggan(new Pelanggan("OrangGanteng", "OTWIMO100"));
+        if (tokoLefelup.isDataKosong()) {
+            tokoLefelup.tambahPelanggan(new Pelanggan("102938475", "JeJuy"));
+            tokoLefelup.tambahPelanggan(new Pelanggan("98765432", "Sultan Gantenk"));
+            tokoLefelup.tambahPelanggan(new Pelanggan("OrangGanteng", "OTWIMO100"));
 
-        try {
-            tokoLefelup.tambahTransaksi(new TopUpGame("Genshin", "102938475", 300, 300 * 1500.0, "8012", "Asia"));
-            tokoLefelup.tambahTransaksi(new TopUpGame("MLBB", "98765432", 1000, 1000 * 1500.0, "2021", "Global"));
-            tokoLefelup.tambahTransaksi(new Voucher("Roblox", "OrangGanteng", 500, 500 * 1500.0));
-            tokoLefelup.tambahTransaksi(new LanggananPremium("Genshin", "Plismenangrateoff", 1, 1 * 79000.0, 30));
-        } catch (Exception e) {
-            System.out.println("Gagal memuat data awal: " + e.getMessage());
+            try {
+                tokoLefelup.tambahTransaksi(new TopUpGame("Genshin", "102938475", 300, 300 * 1500.0, "8012", "Asia"));
+                tokoLefelup.tambahTransaksi(new TopUpGame("MLBB", "98765432", 1000, 1000 * 1500.0, "2021", "Global"));
+                tokoLefelup.tambahTransaksi(new Voucher("Roblox", "OrangGanteng", 500, 500 * 1500.0));
+                tokoLefelup.tambahTransaksi(new LanggananPremium("Genshin", "Plismenangrateoff", 1, 1 * 79000.0, 30));
+            } catch (Exception e) {
+                System.out.println("Gagal memuat data awal: " + e.getMessage());
+            }
         }
         
         boolean isRunning = true;
@@ -35,9 +38,10 @@ public class SistemTopUp {
             System.out.println("2. Lihat Daftar Transaksi");
             System.out.println("3. Cari Riwayat Transaksi");
             System.out.println("4. Manajemen Pelanggan");
-            System.out.println("5. Validasi Pesanan (Demo Association)");
-            System.out.println("6. Keluar");
-            System.out.print("Pilih Menu (1-6): ");
+            System.out.println("5. Validasi Pesanan (Association & Tulis Log)");
+            System.out.println("6. Baca File Log Transaksi (Demo File I/O Teks)");
+            System.out.println("7. Simpan & Keluar (Demo Serialization)");
+            System.out.print("Pilih Menu (1-7): ");
             
             try {
                 int pilihan = scanner.nextInt();
@@ -86,12 +90,27 @@ public class SistemTopUp {
                         tokoLefelup.lihatSemuaTransaksi();
                     }
                     case 3 -> {
-                        System.out.println("\n-- Fitur Cari Pesanan --");
-                        System.out.print("Masukkan UID Pelanggan yang dicari: ");
-                        String kataKunci = scanner.nextLine();
+                        System.out.println("\n-- Fitur Cari Pesanan (Method Overloading) --");
+                        System.out.println("1. Cari berdasarkan UID Pelanggan (String)");
+                        System.out.println("2. Cari berdasarkan Minimal Item (Integer)");
+                        System.out.print("Pilih moda pencarian (1/2): ");
+                        
+                        int tipeCari = scanner.nextInt();
+                        scanner.nextLine();
                         
                         try {
-                            tokoLefelup.cariTransaksi(kataKunci);
+                            if (tipeCari == 1) {
+                                System.out.print("Masukkan UID Pelanggan: ");
+                                String kataKunci = scanner.nextLine();
+                                tokoLefelup.cariTransaksi(kataKunci);
+                            } else if (tipeCari == 2) {
+                                System.out.print("Masukkan Minimal Nominal Item: ");
+                                int angkaKunci = scanner.nextInt();
+                                scanner.nextLine();
+                                tokoLefelup.cariTransaksi(angkaKunci);
+                            } else {
+                                System.out.println("Pilihan tidak valid.");
+                            }
                         } catch (TransaksiTidakDitemukanException e) {
                             System.out.println("Peringatan: " + e.getMessage());
                         }
@@ -144,10 +163,15 @@ public class SistemTopUp {
                         }
                     }
                     case 6 -> {
+                        tokoLefelup.bacaLogTransaksi();
+                    }
+                    case 7 -> {
+                        System.out.println("Menyimpan sesi ke database internal...");
+                        tokoLefelup.simpanDataKeFile();
                         System.out.println("Terima kasih telah menggunakan layanan Lefelup Store!");
                         isRunning = false;
                     }
-                    default -> System.out.println("Pilihan tidak valid (1-6).");
+                    default -> System.out.println("Pilihan tidak valid (1-7).");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("[ERROR INPUT] Harap masukkan format angka yang benar.");

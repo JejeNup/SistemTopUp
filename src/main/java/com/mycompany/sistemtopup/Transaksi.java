@@ -1,6 +1,9 @@
 package com.mycompany.sistemtopup;
 
-public abstract class Transaksi {
+import java.io.Serializable;
+
+public abstract class Transaksi implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String namaGame;
     private String idPelanggan;
     private int nominalTopUp; 
@@ -30,7 +33,7 @@ public abstract class Transaksi {
         if (namaGame != null && !namaGame.trim().isEmpty()) {
             this.namaGame = namaGame;
         } else {
-            this.namaGame = "Unknown Game.";
+            this.namaGame = "Unknown Game";
         }
     }
 
